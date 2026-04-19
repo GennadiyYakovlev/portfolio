@@ -1,0 +1,6 @@
+<svg width="240" height="240" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+  <rect width="240" height="240" rx="24" fill="#e5e7eb" />
+  <circle cx="120" cy="90" r="42" fill="#cbd5e1" />
+  <path d="M40 192c12-20 36-32 60-32s48 12 60 32" fill="none" stroke="#94a3b8" stroke-width="14" stroke-linecap="round" />
+  <text x="50%" y="55%" font-family="Inter, system-ui, sans-serif" font-size="18" fill="#64748b" text-anchor="middle" dominant-baseline="middle">Фото</text>
+</svg>
