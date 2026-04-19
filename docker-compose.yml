@@ -13,7 +13,7 @@ services:
     networks:
       - dokploy-network
     labels:
-    - "traefik.enable=true"
+      - "traefik.enable=true"
       # Используем УНИКАЛЬНЫЕ имена, которых точно нет в системе
       - "traefik.http.routers.ggyakovlev-2025-01.rule=Host(`ggyakovlev.ru`)"
       - "traefik.http.routers.ggyakovlev-2025-01.entrypoints=websecure"
