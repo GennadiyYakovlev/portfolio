@@ -1,0 +1,11 @@
+services:
+  web:
+    image: nginx:alpine
+    volumes:
+      - .:/usr/share/nginx/html:ro
+    networks:
+      - dokploy-network
+
+networks:
+  dokploy-network:
+    external: true
