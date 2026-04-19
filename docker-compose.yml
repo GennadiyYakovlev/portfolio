@@ -13,16 +13,12 @@ services:
     networks:
       - dokploy-network
     labels:
-      - "traefik.enable=true"
-      # ВАЖНО: используем websecure entrypoint для HTTPS
-      - "traefik.http.routers.my-portfolio.rule=Host(`ggyakovlev.ru`)" 
-      - "traefik.http.routers.my-portfolio.entrypoints=websecure"
-      - "traefik.http.routers.my-portfolio.tls.certresolver=letsencrypt"
-      # Дополнительно: разрешаем HTTP для проверки (важно для Let's Encrypt)
-      - "traefik.http.routers.my-portfolio-http.rule=Host(`ggyakovlev.ru`)" 
-      - "traefik.http.routers.my-portfolio-http.entrypoints=web"
-      - "traefik.http.routers.my-portfolio-http.middlewares=redirect-to-https@file"
-      - "traefik.http.services.my-portfolio.loadbalancer.server.port=80"
+    - "traefik.enable=true"
+      # Используем УНИКАЛЬНЫЕ имена, которых точно нет в системе
+      - "traefik.http.routers.ggyakovlev-2025-01.rule=Host(`ggyakovlev.ru`)"
+      - "traefik.http.routers.ggyakovlev-2025-01.entrypoints=websecure"
+      - "traefik.http.routers.ggyakovlev-2025-01.tls.certresolver=letsencrypt"
+      - "traefik.http.services.ggyakovlev-2025-01.loadbalancer.server.port=80"
 
 # 2. (Опционально) Сервис PHP, если нужен
   php:
