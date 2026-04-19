@@ -13,16 +13,16 @@ services:
     networks:
       - dokploy-network
     labels:
-      # Эта метка говорит Traefik обрабатывать этот контейнер
       - "traefik.enable=true"
-      # Пробрасываем порт 80 контейнера наружу
-      - "traefik.http.services.my-site.loadbalancer.server.port=80"
-      # Задаем правило для домена
-      - "traefik.http.routers.my-site.rule=Host(`ggyakovlev.ru`)" # 👈 ОБЯЗАТЕЛЬНО ЗАМЕНИТЕ!
-      # Используем HTTPS (websecure)
-      - "traefik.http.routers.my-site.entrypoints=websecure"
-      # Включаем автоматический выпуск SSL-сертификата
-      - "traefik.http.routers.my-site.tls.certresolver=letsencrypt"
+      # ВАЖНО: используем websecure entrypoint для HTTPS
+      - "traefik.http.routers.my-portfolio.rule=Host(`ggyakovlev.ru`)" 
+      - "traefik.http.routers.my-portfolio.entrypoints=websecure"
+      - "traefik.http.routers.my-portfolio.tls.certresolver=letsencrypt"
+      # Дополнительно: разрешаем HTTP для проверки (важно для Let's Encrypt)
+      - "traefik.http.routers.my-portfolio-http.rule=Host(`ggyakovlev.ru`)" 
+      - "traefik.http.routers.my-portfolio-http.entrypoints=web"
+      - "traefik.http.routers.my-portfolio-http.middlewares=redirect-to-https@file"
+      - "traefik.http.services.my-portfolio.loadbalancer.server.port=80"
 
 # 2. (Опционально) Сервис PHP, если нужен
   php:
