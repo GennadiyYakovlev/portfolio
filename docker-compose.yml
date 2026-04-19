@@ -1,5 +1,4 @@
 services:
-services:
   # 1. Веб-сервер, который будет отдавать файлы
   web:
     image: nginx:alpine
