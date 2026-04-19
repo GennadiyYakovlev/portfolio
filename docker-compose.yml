@@ -1,11 +1,40 @@
 services:
+services:
+  # 1. Веб-сервер, который будет отдавать файлы
   web:
     image: nginx:alpine
+    # Указываем, что контейнер будет доступен изнутри по порту 80
+    # Внешний порт не указываем, так как Dokploy сам направит трафик через Traefik
     volumes:
-      - .:/usr/share/nginx/html:ro
+      # Куда в контейнере лежат файлы сайта
+      - ./my-site:/usr/share/nginx/html:ro
+      # (Опционально) Если у вас сложная конфигурация nginx, можно подключить свой конфиг
+      # - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    # Подключаемся к основной сети Dokploy, чтобы Traefik "увидел" контейнер
     networks:
       - dokploy-network
+    labels:
+      # Эта метка говорит Traefik обрабатывать этот контейнер
+      - "traefik.enable=true"
+      # Пробрасываем порт 80 контейнера наружу
+      - "traefik.http.services.my-site.loadbalancer.server.port=80"
+      # Задаем правило для домена
+      - "traefik.http.routers.my-site.rule=Host(`ggyakovlev.ru`)" # 👈 ОБЯЗАТЕЛЬНО ЗАМЕНИТЕ!
+      # Используем HTTPS (websecure)
+      - "traefik.http.routers.my-site.entrypoints=websecure"
+      # Включаем автоматический выпуск SSL-сертификата
+      - "traefik.http.routers.my-site.tls.certresolver=letsencrypt"
 
+# 2. (Опционально) Сервис PHP, если нужен
+  php:
+    image: php:8.2-fpm-alpine
+    volumes:
+      - ./my-site:/var/www/html
+    networks:
+      - dokploy-network
+#    # Здесь не нужны labels, так как доступ к PHP идет только через nginx
+
+# Объявляем сеть, которую мы используем. Важно: external: true
 networks:
   dokploy-network:
     external: true
